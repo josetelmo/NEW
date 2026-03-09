@@ -1,54 +1,49 @@
-# Organizador de exportação de conta da OpenAI
+# Organizador de dados exportados da OpenAI
 
-Este projeto fornece um sistema em **Python** para organizar arquivos exportados da OpenAI.
+Ferramenta em Python para transformar o `.zip` de exportação da OpenAI em uma estrutura legível, com nomes amigáveis.
 
-## O que ele faz
+## Melhorias principais
 
-- Aceita como origem uma **pasta** ou um **arquivo `.zip`** da exportação.
-- Classifica os arquivos em categorias (`conversas`, `financeiro`, `uso`, `perfil`, etc.).
-- Cria subpastas por **ano-mês** usando a data de modificação de cada arquivo.
-- Evita sobrescrever arquivos com nomes iguais (gera sufixos `_1`, `_2`, ...).
-- Gera ao final:
-  - `relatorio_organizacao.csv` com todos os arquivos organizados.
-  - `resumo.json` com quantidade de arquivos por categoria.
+- Lê exportação em **pasta** ou **arquivo ZIP**.
+- Processa `conversations.json` e gera, para cada conversa:
+  - um arquivo `.json` individual;
+  - um arquivo `.md` com mensagens em ordem cronológica.
+- Renomeia arquivos genéricos com padrão legível por categoria.
+- Agrupa tudo por categoria e `YYYY-MM`.
+- Gera:
+  - `relatorio_organizacao.csv`;
+  - `resumo.json`.
 
 ## Requisitos
 
 - Python 3.9+
 
-## Como usar
-
-### 1) Organizar a partir de uma pasta
+## Uso
 
 ```bash
-python openai_export_organizer.py ./minha_exportacao ./saida_organizada
+python openai_export_organizer.py <origem_zip_ou_pasta> <pasta_saida>
 ```
 
-### 2) Organizar a partir de um ZIP exportado
+### Simulação
 
 ```bash
-python openai_export_organizer.py ./openai_export.zip ./saida_organizada
+python openai_export_organizer.py <origem_zip_ou_pasta> <pasta_saida> --dry-run
 ```
 
-### 3) Simular sem copiar arquivos
-
-```bash
-python openai_export_organizer.py ./minha_exportacao ./saida_organizada --dry-run
-```
-
-## Estrutura de saída (exemplo)
+## Exemplo de saída
 
 ```text
-saida_organizada/
+saida/
   conversas/
-    2026-02/
-      conversations.json
+    2025-11/
+      0001_planejamento_de_viagem.md
+      0001_planejamento_de_viagem.json
   uso/
-    2026-02/
-      usage.csv
+    2025-11/
+      uso_usage_2025_11.csv
   financeiro/
-    2026-02/
-      billing_history.csv
+    2025-11/
+      financeiro_billing_history.csv
   relatorio_organizacao.csv
   resumo.json
 ```
